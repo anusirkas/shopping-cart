@@ -34,3 +34,9 @@ button {
   cursor: pointer;
   font-family: inherit;
 }
+.bg-grain {
+  background-image: url('/src/assets/grain.png');
+  background-size: 200px 200px;
+  opacity: 0.2;
+  pointer-events: none;
+}

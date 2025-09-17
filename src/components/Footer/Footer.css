@@ -1,0 +1,111 @@
+.footer {
+  background: #fff;
+  color: #111;
+  padding: 3rem 2rem;
+  border-top: 1px solid #eee;
+  font-family: Arial, sans-serif;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col h4 {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.footer-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-line .disclaimer {
+  flex: 1;
+  text-align: center;
+  color: #555;
+  font-size: 0.75rem;
+}
+
+.footer-actions {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.locator {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: #111;
+}
+
+.shipping-btn {
+  background: none;
+  border: none;
+  color: #111;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-decoration: underline;
+}
+
+.shipping-popup {
+  position: absolute;
+  bottom: 70px;
+  right: 40px;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.shipping-popup h4 {
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.shipping-popup ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.shipping-popup ul li {
+  margin: 0.3rem 0;
+}
+
+.shipping-popup button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #111;
+}

@@ -1,0 +1,55 @@
+.hero-block {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.img1 { background-image: url("/src/assets/hero.jpg"); }
+.img2 { background-image: url("/src/assets/campaign.jpg"); }
+.img3 { background-image: url("https://picsum.photos/id/1018/1600/900"); }
+.img4 { background-image: url("https://picsum.photos/id/1015/1600/900"); }
+
+/* Logo */
+.sticky-logo {
+  position: sticky;
+  top: 50%; /* scrollides liigub kaasa */
+  transform: translateY(-50%);
+  font-size: 8vw;
+  font-weight: bold;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+  transition: all 0.4s ease;
+}
+
+/* Kui jõuame viimase pildini */
+.sticky-logo.at-end {
+  top: auto;
+  bottom: 5%;   /* jääb pildi alumisse serva */
+  transform: translateY(0);
+}
+
+/* Intro tekst */
+.intro-text {
+  padding: 6rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  background: white;
+  position: relative;
+  z-index: 1;
+}
+
+
+.intro-text h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-family: serif;
+}
+
+.intro-text p {
+  font-size: 1.25rem;
+  color: #444;
+  max-width: 600px;
+  margin: 0 auto;
+}
