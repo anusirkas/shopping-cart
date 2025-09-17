@@ -1,45 +1,68 @@
-.hero-block {
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
+.sticky-wrapper {
+  position: relative;
+  height: 400vh; /* 4 x hero-block */
+  margin: 0;
+  padding: 0;
+  /* EEMALDA see ↓ */
+  /* margin-top: -60px; */
 }
 
-.img1 { background-image: url("/src/assets/hero.jpg"); }
-.img2 { background-image: url("/src/assets/campaign.jpg"); }
-.img3 { background-image: url("https://picsum.photos/id/1018/1600/900"); }
-.img4 { background-image: url("https://picsum.photos/id/1015/1600/900"); }
+.hero-block:first-of-type {
+  margin-top: 0; /* 0, mitte -60px */
+}
 
-/* Logo */
+
+/* Sticky logo */
 .sticky-logo {
   position: sticky;
-  top: 50%; /* scrollides liigub kaasa */
+  top: 50%; /* scrollides hoiab keskel */
   transform: translateY(-50%);
   font-size: 8vw;
   font-weight: bold;
+  font-family: "Inter", sans-serif;
+  color: black;
   text-align: center;
   z-index: 5;
   pointer-events: none;
-  transition: all 0.4s ease;
+  margin: 0;
 }
 
-/* Kui jõuame viimase pildini */
-.sticky-logo.at-end {
-  top: auto;
-  bottom: 5%;   /* jääb pildi alumisse serva */
-  transform: translateY(0);
+/* Hero plokid */
+.hero-block {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
 }
 
-/* Intro tekst */
+.img1 {
+  background-image: url("/src/assets/hero.jpg");
+}
+.img2 {
+  background-image: url("https://picsum.photos/id/1018/1600/900");
+}
+.img3 {
+  background-image: url("/src/assets/campaign.jpg");
+}
+.img4 {
+  background-image: url("https://picsum.photos/id/1015/1600/900");
+}
+
+/* Sisu pärast herot */
+.content {
+  position: relative;
+  background: white;
+  z-index: 10;
+}
+
 .intro-text {
   padding: 6rem 2rem;
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
-  background: white;
-  position: relative;
-  z-index: 1;
 }
-
 
 .intro-text h2 {
   font-size: 2.5rem;

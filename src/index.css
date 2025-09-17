@@ -9,6 +9,10 @@ html, body, #root {
   margin: 0;
   padding: 0;
 }
+main {
+  margin: 0;
+  padding: 0;
+}
 
 /* Globaalne font ja värvid */
 body {
