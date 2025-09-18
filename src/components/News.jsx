@@ -4,31 +4,31 @@ function News() {
       id: 1,
       title: "Free Shipping & Returns",
       text: "Fast delivery and easy returns or exchanges on all orders.",
-      img: "https://picsum.photos/400/600?1",
+      img: "https://picsum.photos//id/420/4825/3217",
     },
     {
       id: 2,
       title: "Sustainability Promise",
       text: "We care about you, so we care about our planet. Read our promises.",
-      img: "https://picsum.photos/400/600?2",
+      img:  "https://picsum.photos/id/325/4928/3264",
     },
     {
       id: 3,
-      title: "AuroSpere in Palais Royal",
+      title: "AuroSphere in Royal Queen Street",
       text: "A permanent gallery merging fashion, art and publishing beneath Paris arcades.",
-      img: "https://picsum.photos/400/600?3",
+      img: "https://picsum.photos/id/405/3000/1688",
     },
     {
       id: 4,
       title: "FW25 Runway",
       text: "Explore the Women’s FW25 runway collection.",
-      img: "https://picsum.photos/400/600?4",
+      img: "https://picsum.photos/id/21/3008/2008",
     },
     {
       id: 5,
       title: "Discover Our Stores",
       text: "Find your nearest Lux store and experience timeless design.",
-      img: "https://picsum.photos/400/600?5",
+      img: "https://picsum.photos/id/409/4368/2912",
     },
   ];
 

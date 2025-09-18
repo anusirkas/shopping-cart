@@ -1,0 +1,134 @@
+.shop-page {
+  padding: 2rem 4rem;
+  background: #f8f8f8; /* helehall taust */
+  font-family: "Inter", sans-serif;
+}
+
+/* Ülemine nav */
+.shop-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.shop-categories span {
+  margin-right: 1.5rem;
+  cursor: pointer;
+  color: #333;
+}
+.shop-categories .active {
+  font-weight: 600;
+  border-bottom: 2px solid #000;
+  padding-bottom: 4px;
+}
+.shop-filters {
+  font-size: 13px;
+  color: #333;
+}
+
+/* Pealkiri */
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2rem;
+}
+.shop-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.shop-header p {
+  font-size: 13px;
+  color: #555;
+}
+
+/* Product grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* Product card */
+.product-card {
+  background: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-img {
+  width: 100%;
+  height: 400px;
+  object-fit: contain;
+  background: white;
+}
+.product-grid, .minimal-card {
+  overflow: hidden;
+}
+
+.minimal-img {
+  max-width: 100%;
+  height: 520px;
+  object-fit: contain;
+  display: block;
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Filler mood card */
+.filler-card {
+  grid-column: span 3;
+  margin: 2rem 0;
+}
+
+.filler-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+/* Minimalistlik card */
+.minimal-card {
+  display: flex;
+  flex-direction: column;
+  background: #f8f8f8;
+}
+
+.minimal-img {
+  width: 100%;
+  height: 520px;
+  object-fit: contain;
+  background: white;
+}
+
+.minimal-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+}
+
+.minimal-title {
+  max-width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.minimal-price {
+  font-weight: 600;
+}
