@@ -17,7 +17,10 @@ function Shop() {
                 p.category === "jewelery"
           )
           // eemalda konkreetne T-särk
-          .filter(p => !p.title.toLowerCase().includes("danvouy"));
+          .filter(p =>
+            !p.title.toLowerCase().includes("danvouy") && // eemaldab konkreetse T-särgi
+            !p.title.toLowerCase().includes("fjallraven") // eemaldab koti
+          )
 
         // Sorteeri: ehted enne riideid
         filtered.sort((a, b) => {
@@ -58,19 +61,18 @@ function Shop() {
 
       {/* Product grid */}
       <div className="product-grid">
-        {products.map((p, i) =>
-          i === 3 ? (
-            <div key={`filler-${i}`} className="filler-card">
-              <img
-                src="https://picsum.photos/id/21/3008/2008"
-                alt="Mood"
-              />
-            </div>
-          ) : (
+        {products.map((p, i) => (
+          <>
             <MinimalProductCard key={p.id} product={p} />
-          )
-        )}
+            {i === 2 && ( // pärast 3. toodet
+              <div key="filler" className="filler-card">
+                <img src="https://picsum.photos/id/21/3008/2008" alt="Mood" />
+              </div>
+            )}
+          </>
+        ))}
       </div>
+
     </div>
   );
 }
