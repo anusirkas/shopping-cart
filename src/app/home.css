@@ -1,0 +1,140 @@
+/* Sticky wordmark over stacked editorial images (from the original Auro) */
+.hero {
+  position: relative;
+  overflow: clip; /* keeps the sticky wordmark inside the hero without breaking sticky */
+}
+.hero-logo {
+  position: sticky;
+  top: calc(50vh - 6vw);
+  height: 0;
+  z-index: 2;
+  text-align: center;
+  font-size: clamp(64px, 16vw, 260px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0;
+  color: #fff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+}
+.hero-img {
+  width: 100%;
+  height: calc(100vh - 92px);
+  object-fit: cover;
+}
+.intro {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  text-align: center;
+  padding: clamp(64px, 10vw, 140px) var(--gutter);
+}
+.intro h1 {
+  max-width: 18em;
+  font-size: clamp(28px, 4vw, 48px);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.home-section {
+  padding: 48px var(--gutter);
+}
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+}
+.section-head h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.link-arrow {
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.link-arrow::after {
+  content: " →";
+}
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin: 72px var(--gutter);
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.feature {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 32px;
+  background: #fff;
+  min-height: 320px;
+  transition: background 0.2s;
+}
+.feature:hover {
+  background: var(--tile);
+}
+.feature h3 {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+.feature p {
+  margin: 0;
+  color: var(--ink-2);
+}
+.feature .link-arrow {
+  margin-top: auto;
+}
+.feature-flat {
+  position: relative;
+}
+.feature-sketch {
+  width: 90px;
+  margin-top: auto;
+  align-self: flex-end;
+}
+.category-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+}
+.category-list a {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+.cat-flat {
+  background: var(--tile);
+  aspect-ratio: 1;
+  padding: 16%;
+  transition: background 0.2s;
+}
+.category-list a:hover .cat-flat {
+  background: var(--line);
+}
+
+@media (max-width: 960px) {
+  .home-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .features {
+    grid-template-columns: 1fr;
+  }
+  .feature {
+    min-height: 0;
+  }
+  .category-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

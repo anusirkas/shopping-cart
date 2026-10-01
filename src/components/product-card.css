@@ -1,0 +1,70 @@
+/* product card */
+.card-media {
+  position: relative;
+  display: block;
+  background: var(--tile);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+.card-flat {
+  position: absolute;
+  inset: 12% 14%;
+  width: 72%;
+  height: 76%;
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.card-flat-alt {
+  opacity: 0;
+}
+.card-media:hover .card-flat {
+  transform: scale(1.03);
+}
+.card-media:hover .card-flat-alt {
+  opacity: 1;
+}
+.badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.badge-muted {
+  left: auto;
+  right: 12px;
+  color: var(--muted);
+}
+.card-body {
+  padding-top: 10px;
+  font-size: 13px;
+}
+.card-name {
+  font-weight: 500;
+}
+.card-fibre {
+  margin: 2px 0 8px;
+  font-size: 12px;
+}
+.swatches {
+  display: flex;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.swatches li {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgb(0 0 0 / 0.15);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
