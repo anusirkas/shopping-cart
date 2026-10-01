@@ -41,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <h3>Transparency</h3>
                 <Link href="/passport">Product passports</Link>
                 <Link href="/shop?fibre=Recycled+wool">Recycled fibres</Link>
+                <Link href="/stores">Stores & repairs</Link>
               </div>
               <div>
                 <h3>About this demo</h3>

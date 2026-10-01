@@ -13,6 +13,7 @@ const nav = [
   { href: "/shop?category=trousers", label: "Trousers" },
   { href: "/shop?category=accessories", label: "Accessories" },
   { href: "/passport", label: "Passports" },
+  { href: "/stores", label: "Stores" },
 ];
 
 export default function Header() {

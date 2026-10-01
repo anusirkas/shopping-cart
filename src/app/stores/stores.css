@@ -1,0 +1,94 @@
+.store-locator {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  height: min(72vh, 720px);
+  border: 1px solid var(--line);
+}
+.store-map {
+  height: 100%;
+  width: 100%;
+  background: var(--tile);
+  z-index: 0;
+}
+.store-map-loading {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+.store-marker span {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 0 0 3px #fff;
+}
+.store-side {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--line);
+  min-height: 0;
+}
+.store-search input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 18px 20px;
+  font: inherit;
+  outline: none;
+}
+.store-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+.store-list button {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 18px 20px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.store-list button:hover,
+.store-list button.is-active {
+  background: var(--tile);
+}
+.store-city {
+  font-size: 16px;
+  font-weight: 500;
+}
+.store-note {
+  margin-top: 6px;
+  color: var(--ink-2);
+}
+.store-list > li.muted {
+  padding: 18px 20px;
+}
+@media (max-width: 800px) {
+  .store-locator {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .store-map {
+    height: 50vh;
+  }
+  .store-side {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+/* monochrome map to match the store's black-and-white look */
+.store-map .leaflet-tile-pane {
+  filter: grayscale(1) contrast(0.92) brightness(1.04);
+}

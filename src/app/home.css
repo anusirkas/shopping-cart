@@ -1,7 +1,6 @@
 /* Sticky wordmark over stacked editorial images (from the original Auro) */
 .hero {
   position: relative;
-  overflow: clip; /* keeps the sticky wordmark inside the hero without breaking sticky */
 }
 .hero-logo {
   position: sticky;
@@ -22,7 +21,10 @@
   height: calc(100vh - 92px);
   object-fit: cover;
 }
+/* the wordmark settles half over the last image, half over this section */
 .intro {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: center;
   gap: 24px;
@@ -124,7 +126,71 @@
   background: var(--line);
 }
 
+/* Journal: the original Auro "Latest news" row */
+.journal {
+  padding: 96px var(--gutter) 0;
+}
+.journal h2 {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: clamp(32px, 4vw, 48px);
+  letter-spacing: -0.01em;
+  margin-bottom: 48px;
+}
+.journal-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 32px;
+}
+.story {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.story-media {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--tile);
+  margin-bottom: 16px;
+}
+.story-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.story:hover .story-media img {
+  transform: scale(1.05);
+}
+.story h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+.story p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
 @media (max-width: 960px) {
+  .journal-grid {
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: 70%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+  }
+  .journal-grid li {
+    scroll-snap-align: start;
+  }
   .home-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FlatSketch from "@/components/FlatSketch";
+import { journal } from "@/data/editorial";
 import ProductCard from "@/components/ProductCard";
 import { queryCatalogue } from "@/lib/catalogue-query";
 import { categoryLabel } from "@/lib/labels";
@@ -88,6 +89,24 @@ export default async function Home() {
               </li>
             );
           })}
+        </ul>
+      </section>
+
+      <section className="journal" aria-labelledby="journal-title">
+        <h2 id="journal-title">Journal</h2>
+        <ul className="journal-grid">
+          {journal.map((story) => (
+            <li key={story.title}>
+              <Link href={story.href} className="story">
+                <span className="story-media">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={story.image} alt="" loading="lazy" />
+                </span>
+                <h3>{story.title}</h3>
+                <p>{story.text}</p>
+              </Link>
+            </li>
+          ))}
         </ul>
       </section>
     </>
