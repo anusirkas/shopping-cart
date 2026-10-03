@@ -293,3 +293,49 @@
 .fit-conf-low {
   color: var(--warn);
 }
+
+/* flat / 3D fabric switch */
+.view-toggle {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  background: #fff;
+  border: 1px solid var(--line);
+  z-index: 1;
+}
+.view-toggle button {
+  background: none;
+  border: 0;
+  padding: 7px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.view-toggle button[aria-pressed="true"] {
+  background: var(--ink);
+  color: #fff;
+}
+.fabric-viewer {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+}
+.fabric-viewer:active {
+  cursor: grabbing;
+}
+.fabric-loading {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: default;
+}
+.fabric-hint {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  pointer-events: none;
+}

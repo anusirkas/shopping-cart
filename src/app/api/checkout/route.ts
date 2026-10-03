@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { validateCart, type RequestedLine } from "@/lib/checkout";
 import { getDb } from "@/lib/db/client";
 import { orders } from "@/lib/db/schema";
-import { getCatalogue } from "@/lib/repository";
+import { getCatalogueForCheckout } from "@/lib/repository";
 import { getStripe } from "@/lib/stripe";
 
 /** Creates a Stripe Checkout session (test mode) for the bag. */
@@ -21,7 +21,14 @@ export async function POST(request: Request) {
     .filter((l): l is RequestedLine => typeof l?.sku === "string" && typeof l?.quantity === "number")
     .map((l) => ({ sku: l.sku, quantity: l.quantity }));
 
-  const validation = validateCart(lines, await getCatalogue());
+  let catalogue;
+  try {
+    catalogue = await getCatalogueForCheckout();
+  } catch (err) {
+    console.error("Checkout could not read stock", err);
+    return NextResponse.json({ error: "checkout-unavailable" }, { status: 503 });
+  }
+  const validation = validateCart(lines, catalogue);
   if (!validation.ok) return NextResponse.json({ error: "bag-changed", details: validation.errors }, { status: 409 });
 
   const stripe = getStripe();

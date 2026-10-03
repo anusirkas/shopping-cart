@@ -2,7 +2,7 @@ import "server-only";
 import { asc } from "drizzle-orm";
 import { cache } from "react";
 import { catalogue as seedCatalogue } from "@/data/catalogue";
-import { getDb } from "@/lib/db/client";
+import { getDb, type Db } from "@/lib/db/client";
 import { colorways, passportFibres, supplyStages } from "@/lib/db/schema";
 import type { Construction, Product, Silhouette, Size, SupplyStage } from "@/lib/types";
 
@@ -17,7 +17,23 @@ import type { Construction, Product, Silhouette, Size, SupplyStage } from "@/lib
 export const getCatalogue = cache(async (): Promise<Product[]> => {
   const db = getDb();
   if (!db) return seedCatalogue;
+  try {
+    return await loadFromDb(db);
+  } catch (err) {
+    // a cold or unreachable database shouldn't take browsing down; checkout
+    // uses getCatalogueForCheckout, which never falls back
+    console.error("Catalogue query failed, serving the bundled catalogue", err);
+    return seedCatalogue;
+  }
+});
 
+/** Live stock for checkout: fails loudly instead of trusting bundled data. */
+export async function getCatalogueForCheckout(): Promise<Product[]> {
+  const db = getDb();
+  return db ? loadFromDb(db) : seedCatalogue;
+}
+
+async function loadFromDb(db: Db): Promise<Product[]> {
   const rows = await db.query.products.findMany({
     with: {
       colorways: { orderBy: [asc(colorways.position)] },
@@ -59,7 +75,7 @@ export const getCatalogue = cache(async (): Promise<Product[]> => {
       footprint: { co2Kg: r.passport.co2Kg, waterL: r.passport.waterL },
     },
   }));
-});
+}
 
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
   return (await getCatalogue()).find((p) => p.slug === slug);

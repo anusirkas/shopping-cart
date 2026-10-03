@@ -1,11 +1,18 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useCart } from "@/components/CartProvider";
 import FitFinder from "@/components/FitFinder";
 import FlatSketch from "@/components/FlatSketch";
 import { formatPrice } from "@/lib/money";
 import type { Product, Size } from "@/lib/types";
+
+// three.js is ~600 kB, so the 3D view only loads when someone asks for it
+const FabricViewer = dynamic(() => import("@/components/FabricViewer"), {
+  ssr: false,
+  loading: () => <div className="fabric-viewer fabric-loading">Weaving the fabric…</div>,
+});
 
 type Props = { product: Product; children?: React.ReactNode };
 
@@ -16,6 +23,7 @@ export default function ProductDetail({ product, children }: Props) {
   const oneSize = product.sizes.length === 1;
   const [size, setSize] = useState<Size | null>(oneSize ? product.sizes[0] : null);
   const [error, setError] = useState(false);
+  const [view, setView] = useState<"flat" | "fabric">("flat");
 
   const stockOf = (s: Size) => product.variants.find((v) => v.colorway === color.name && v.size === s)?.stock ?? 0;
   const variant = size ? product.variants.find((v) => v.colorway === color.name && v.size === size) : undefined;
@@ -43,8 +51,16 @@ export default function ProductDetail({ product, children }: Props) {
   return (
     <div className="pdp">
       <div className="pdp-media">
-        <FlatSketch silhouette={product.silhouette} construction={product.construction} color={color.hex} className="pdp-flat" title={`${product.name} in ${color.name}`} />
-        <span className="pdp-spec">Technical flat · {product.passport.id}</span>
+        {view === "flat" ? (
+          <FlatSketch silhouette={product.silhouette} construction={product.construction} color={color.hex} className="pdp-flat" title={`${product.name} in ${color.name}`} />
+        ) : (
+          <FabricViewer color={color.hex} construction={product.construction} label={`${color.name} ${product.name} fabric`} />
+        )}
+        <div className="view-toggle" role="group" aria-label="Product view">
+          <button aria-pressed={view === "flat"} onClick={() => setView("flat")}>Technical flat</button>
+          <button aria-pressed={view === "fabric"} onClick={() => setView("fabric")}>3D fabric</button>
+        </div>
+        <span className="pdp-spec">{view === "flat" ? "Technical flat" : "Fabric swatch"} · {product.passport.id}</span>
       </div>
 
       <div className="pdp-info">

@@ -50,6 +50,16 @@ test.describe("product page", () => {
     await expect(page.locator(".pdp-sizes").getByRole("button", { name: "S", exact: true })).toHaveAttribute("aria-pressed", "true");
   });
 
+  test("switches to the 3D fabric view on demand", async ({ page }) => {
+    await page.goto("/product/pohja-coat");
+    await expect(page.locator(".fabric-viewer canvas")).toHaveCount(0); // three.js isn't loaded up front
+    await page.getByRole("button", { name: "3D fabric" }).click();
+    await expect(page.getByRole("img", { name: /3D view of Camel Põhja Coat fabric/ })).toBeVisible();
+    await expect(page.locator(".fabric-viewer canvas")).toBeVisible();
+    await page.getByRole("button", { name: "Technical flat" }).click();
+    await expect(page.getByRole("img", { name: "Põhja Coat in Camel" })).toBeVisible();
+  });
+
   test("asks for a size before adding to the bag", async ({ page }) => {
     await page.goto("/product/vale-crew");
     await page.getByRole("button", { name: "Add to bag" }).click();
