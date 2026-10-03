@@ -10,10 +10,12 @@ import "./home.css";
 
 export const revalidate = 300;
 
+// the original Auro front page sequence
 const heroes = [
   { src: "/images/hero.jpg", alt: "Two models in white shirting lying on a stone floor" },
-  { src: "/images/campaign.jpg", alt: "Auro autumn campaign" },
-  { src: "/images/editorial.jpg", alt: "Editorial portrait" },
+  { src: "/images/landscape.jpg", alt: "Green ridges disappearing into low cloud" },
+  { src: "/images/campaign.jpg", alt: "Black and white portrait of a woman in a silk vest and pendant, laughing on the sand" },
+  { src: "/images/waterfront.jpg", alt: "A man in a linen shirt sitting by the water, a city skyline in the haze" },
 ];
 
 export default async function Home() {
