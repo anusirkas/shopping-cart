@@ -143,6 +143,14 @@ button {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+@media (max-width: 480px) {
+  .demo-banner-extra {
+    display: block;
+  }
+  .demo-banner-sep {
+    display: none;
+  }
+}
 .header {
   position: sticky;
   top: 0;
@@ -185,6 +193,12 @@ button {
 .menu-btn {
   display: none;
 }
+.back-office-link {
+  color: var(--muted);
+}
+.back-office-link:hover {
+  color: var(--ink);
+}
 .burger,
 .burger::before,
 .burger::after {
@@ -222,6 +236,10 @@ button {
 }
 
 @media (max-width: 960px) {
+  /* on phones the banner link is enough; keep the header to search and bag */
+  .back-office-link {
+    display: none;
+  }
   .header-row {
     grid-template-columns: auto 1fr auto;
     gap: 12px;

@@ -22,6 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CartProvider>
           <div className="demo-banner">
             Portfolio demo by <a href="https://portfolio-anu-sirkas-projects.vercel.app">Anu Sirkas</a> · no real orders are placed
+            <span className="demo-banner-extra">
+              <span className="demo-banner-sep"> · </span>
+              <Link href="/admin">Try the back office →</Link>
+            </span>
           </div>
           <Header />
           <main>{children}</main>
@@ -47,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <h3>About this demo</h3>
                 <a href="https://github.com/anusirkas/shopping-cart">Source on GitHub</a>
                 <a href="https://portfolio-anu-sirkas-projects.vercel.app/work/auro">Case study</a>
-                <Link href="/admin">Admin (read-only demo)</Link>
+                <Link href="/admin">Back office (demo)</Link>
               </div>
             </div>
             <p className="muted footer-note">

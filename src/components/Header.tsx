@@ -53,6 +53,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="header-actions">
+          <Link href="/admin" className="text-btn back-office-link">Back office</Link>
           <button className="text-btn" onClick={() => setSearchOpen((v) => !v)} aria-expanded={searchOpen}>
             Search
           </button>
