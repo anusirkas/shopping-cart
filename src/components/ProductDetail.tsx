@@ -6,6 +6,7 @@ import { useCart } from "@/components/CartProvider";
 import FitFinder from "@/components/FitFinder";
 import FlatSketch from "@/components/FlatSketch";
 import { formatPrice } from "@/lib/money";
+import { LOW_STOCK } from "@/lib/stock";
 import type { Product, Size } from "@/lib/types";
 
 // three.js is ~600 kB, so the 3D view only loads when someone asks for it
@@ -106,6 +107,7 @@ export default function ProductDetail({ product, children }: Props) {
                   >
                     {s}
                     {stock === 0 && <span className="sr-only"> (sold out)</span>}
+                    {stock > 0 && stock <= LOW_STOCK && <span className="size-left">{stock} left</span>}
                   </button>
                 );
               })}
@@ -125,7 +127,7 @@ export default function ProductDetail({ product, children }: Props) {
 
         <p className="pdp-stock" aria-live="polite">
           {error && <span className="warn">Choose a size first.</span>}
-          {!error && size && available > 0 && available <= 3 && <span className="warn">Only {available} left in {color.name}</span>}
+          {!error && size && available > 0 && available <= LOW_STOCK && <span className="warn">Only {available} left in {color.name}</span>}
           {!error && size && available === 0 && <span className="muted">Sold out in {color.name}</span>}
         </p>
 

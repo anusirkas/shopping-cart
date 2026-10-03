@@ -5,13 +5,13 @@ import { demoLoginEnabled, getRole, ownerLoginEnabled } from "@/lib/admin-auth";
 import { getDb } from "@/lib/db/client";
 import { formatPrice } from "@/lib/money";
 import { getCatalogueForCheckout, getRecentOrders } from "@/lib/repository";
+import { LOW_STOCK as LOW } from "@/lib/stock";
 import type { Size } from "@/lib/types";
 import "./admin.css";
 
 export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
-const LOW = 2;
 const SIZES: Size[] = ["XS", "S", "M", "L", "XL", "ONE"];
 
 type Props = { searchParams: Promise<{ filter?: string }> };
@@ -61,8 +61,8 @@ export default async function AdminPage({ searchParams }: Props) {
 
       {role === "demo" && (
         <p className="notice">
-          You&apos;re in a demo session: change any stock level and press Save, then check the product page. Demo stock is capped at 50 and
-          resets every night, so you can&apos;t break anything.
+          You&apos;re in a demo session. Try it: set a size to 0, 1 or 2, press Save, then open the product (click its name). Sold-out sizes
+          are crossed out and the last ones show &ldquo;1 left&rdquo;. Demo stock is capped at 50 and resets every night, so you can&apos;t break anything.
         </p>
       )}
       {!role && demoLoginEnabled() && connected && (
