@@ -30,7 +30,7 @@ Screenshots are generated from the live site with `npx tsx scripts/screenshots.t
 | Data | PostgreSQL on Neon, Drizzle ORM. Falls back to the bundled seed catalogue when no database is configured, so the demo never goes down |
 | Payments | Stripe Checkout in test mode; a signed webhook marks orders paid and decrements stock (verified end to end on the live site) |
 | Maps | Leaflet with OpenStreetMap tiles |
-| Quality | Vitest unit tests, ESLint, type-checking and a production build on every push (GitHub Actions) |
+| Quality | Vitest unit tests, Playwright end-to-end tests (desktop and mobile), ESLint, type-checking and a production build on every push (GitHub Actions) |
 | Hosting | Vercel |
 
 Everything runs on free tiers.
@@ -72,10 +72,13 @@ npm run db:seed
 ## Tests
 
 ```bash
-npm test
+npm test           # unit tests (Vitest)
+npm run test:e2e   # end-to-end tests (Playwright)
 ```
 
-Covers catalogue querying and faceting, the fit-finder algorithm and server-side checkout validation.
+**Unit tests** cover catalogue querying and faceting, the fit-finder algorithm and server-side checkout validation.
+
+**End-to-end tests** build the app and drive it in Chromium: URL-driven filters and shareable views, search, the fit finder selecting a size, the bag (add, change quantity, survive a reload, remove), checkout API validation, the webhook rejecting unsigned calls, passports, store search and the mobile menu. They run with database and Stripe keys blanked, so they never touch real services and always see the same catalogue.
 
 ---
 
