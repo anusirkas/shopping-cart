@@ -97,4 +97,4 @@ npm run test:e2e   # end-to-end tests (Playwright)
 
 ---
 
-Auro is a fictional brand. Footprint figures are illustrative estimates, not audited data. Editorial photography from the original Auro project; landscape and waterfront photos by Andrew Ridley and Caleb George on Unsplash.
+Auro is a fictional brand. Footprint figures are illustrative estimates, not audited data. Editorial photography from the original Auro project; black coat editorial by Malicki M Beser on Unsplash.

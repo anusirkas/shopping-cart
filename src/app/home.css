@@ -20,6 +20,13 @@
   width: 100%;
   height: calc(100vh - 92px);
   object-fit: cover;
+  object-position: var(--focus, center);
+}
+@media (max-aspect-ratio: 1/1) {
+  /* portrait screens crop the sides: keep faces in frame */
+  .hero-img {
+    object-position: var(--mobile-focus, center);
+  }
 }
 /* the wordmark settles half over the last image, half over this section */
 .intro {

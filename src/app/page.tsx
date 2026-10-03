@@ -10,12 +10,12 @@ import "./home.css";
 
 export const revalidate = 300;
 
-// the original Auro front page sequence
+// Crops are chosen per photo: `focus` for wide screens (cropped top and
+// bottom) and `mobileFocus` for portrait screens (cropped at the sides)
 const heroes = [
-  { src: "/images/hero.jpg", alt: "Two models in white shirting lying on a stone floor" },
-  { src: "/images/landscape.jpg", alt: "Green ridges disappearing into low cloud" },
-  { src: "/images/campaign.jpg", alt: "Black and white portrait of a woman in a silk vest and pendant, laughing on the sand" },
-  { src: "/images/waterfront.jpg", alt: "A man in a linen shirt sitting by the water, a city skyline in the haze" },
+  { src: "/images/hero.jpg", focus: "50% 50%", mobileFocus: "70% 30%", alt: "Two models in white shirting lying on a stone floor" },
+  { src: "/images/campaign.jpg", focus: "50% 35%", mobileFocus: "76% 40%", alt: "Black and white portrait of a woman in a silk vest and pendant, laughing on the sand" },
+  { src: "/images/coat.jpg", focus: "50% 12%", mobileFocus: "38% 20%", alt: "A model in an oversized black coat, in silhouette against a white background" },
 ];
 
 export default async function Home() {
@@ -30,7 +30,14 @@ export default async function Home() {
         <div className="hero-logo" aria-hidden="true">Auro</div>
         {heroes.map((h, i) => (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={h.src} src={h.src} alt={h.alt} className="hero-img" loading={i === 0 ? "eager" : "lazy"} />
+          <img
+            key={h.src}
+            src={h.src}
+            alt={h.alt}
+            className="hero-img"
+            loading={i === 0 ? "eager" : "lazy"}
+            style={{ "--focus": h.focus, "--mobile-focus": h.mobileFocus } as React.CSSProperties}
+          />
         ))}
       </section>
 
