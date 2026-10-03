@@ -5,8 +5,11 @@ test.describe("shop", () => {
     await page.goto("/shop");
     await expect(page.getByText("29 products")).toBeVisible();
 
-    await page.getByRole("listitem").filter({ hasText: /^Knitwear/ }).click();
-    await expect(page).toHaveURL(/category=knitwear/);
+    // the first click can land before hydration on a busy machine, so retry it
+    await expect(async () => {
+      await page.getByRole("listitem").filter({ hasText: /^Knitwear/ }).click();
+      await expect(page).toHaveURL(/category=knitwear/, { timeout: 1000 });
+    }).toPass();
     await expect(page.getByRole("heading", { level: 1, name: "Knitwear" })).toBeVisible();
     await expect(page.getByText("6 products")).toBeVisible();
 

@@ -14,8 +14,10 @@ export const revalidate = 300;
 // bottom) and `mobileFocus` for portrait screens (cropped at the sides)
 const heroes = [
   { src: "/images/hero.jpg", focus: "50% 50%", mobileFocus: "70% 30%", alt: "Two models in white shirting lying on a stone floor" },
-  { src: "/images/campaign.jpg", focus: "50% 35%", mobileFocus: "76% 40%", alt: "Black and white portrait of a woman in a silk vest and pendant, laughing on the sand" },
   { src: "/images/coat.jpg", focus: "50% 12%", mobileFocus: "38% 20%", alt: "A model in an oversized black coat, in silhouette against a white background" },
+  // the one colour shot sits between the black-and-white ones
+  { src: "/images/red-suit.jpg", focus: "50% 0%", mobileFocus: "60% 0%", alt: "A woman in a red suit sitting against a clear blue sky" },
+  { src: "/images/campaign.jpg", focus: "50% 35%", mobileFocus: "76% 40%", alt: "Black and white portrait of a woman in a silk vest and pendant, laughing on the sand" },
 ];
 
 export default async function Home() {
