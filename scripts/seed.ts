@@ -3,12 +3,13 @@
  *   npm run db:seed
  * Safe to re-run: it clears catalogue tables first (orders are kept).
  */
+import { existsSync } from "node:fs";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { catalogue } from "../src/data/catalogue";
 import * as s from "../src/lib/db/schema";
 
-process.loadEnvFile?.(".env.local");
+if (existsSync(".env.local")) process.loadEnvFile(".env.local");
 
 const url = process.env.DATABASE_URL;
 if (!url) {
