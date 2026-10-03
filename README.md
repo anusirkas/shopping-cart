@@ -2,7 +2,9 @@
 
 A full-stack fashion store built as a portfolio project by [Anu Sirkas](https://portfolio-anu-sirkas-projects.vercel.app), a software engineer with ten years in garment technology and textile design.
 
-**Live demo:** https://auro-studio.vercel.app · no real orders are placed
+**Live demo:** https://auro-studio.vercel.app · payments run in Stripe test mode, use card `4242 4242 4242 4242`
+
+![Auro shop with technical flats](docs/screenshots/shop.webp)
 
 Auro started as a React storefront inspired by Acne Studios, Prada and Celine. It is now a Next.js application that treats fashion domain knowledge as product features:
 
@@ -10,13 +12,24 @@ Auro started as a React storefront inspired by Acne Studios, Prada and Celine. I
 - **A measurement-based fit finder.** It recommends a size by comparing body measurements with the garment's finished measurements and its designed *ease* (how much room a relaxed or slim fit is meant to have), allowing stretch knits to go below zero ease and rigid wovens not. That's how a garment technologist checks a fit sample.
 - **Technical flats instead of product photos.** Products are drawn as the line drawings sent to factories (15 silhouettes in SVG), recoloured per colourway, with fabric texture by construction: knit, rib, twill, plain weave, satin or canvas.
 
+## Screens
+
+| Fit finder | Product passport |
+|---|---|
+| ![Fit finder recommending size S for a slim cashmere turtleneck](docs/screenshots/product-fit-finder.webp) | ![Passport for the Põhja Coat with QR code, composition and supply chain](docs/screenshots/passport.webp) |
+| **Front page** | **Stores** |
+| ![Front page with the Auro wordmark over editorial photography](docs/screenshots/home.webp) | ![Store locator on a monochrome map of Paris](docs/screenshots/stores.webp) |
+
+Screenshots are generated from the live site with `npx tsx scripts/screenshots.ts`.
+
 ## Stack
 
 | | |
 |---|---|
 | App | Next.js 16 (App Router, Server Components), React 19, TypeScript |
 | Data | PostgreSQL on Neon, Drizzle ORM. Falls back to the bundled seed catalogue when no database is configured, so the demo never goes down |
-| Payments | Stripe Checkout in test mode, webhook marks orders paid and decrements stock |
+| Payments | Stripe Checkout in test mode; a signed webhook marks orders paid and decrements stock (verified end to end on the live site) |
+| Maps | Leaflet with OpenStreetMap tiles |
 | Quality | Vitest unit tests, ESLint, type-checking and a production build on every push (GitHub Actions) |
 | Hosting | Vercel |
 
