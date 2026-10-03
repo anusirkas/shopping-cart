@@ -38,6 +38,17 @@ async function main() {
   await page.evaluate(() => window.scrollTo(0, 60));
   await shot("product-fit-finder");
 
+  await page.goto(`${base}/product/pohja-coat`);
+  await page.getByRole("button", { name: "3D fabric" }).click();
+  await page.locator(".fabric-viewer canvas").waitFor();
+  await page.waitForTimeout(3000); // let the drape settle
+  await page.evaluate(() => window.scrollTo(0, 60));
+  await shot("product-3d-fabric");
+
+  await page.goto(`${base}/admin`);
+  await page.waitForLoadState("networkidle");
+  await shot("admin");
+
   await page.goto(`${base}/passport/AU-007-COA`);
   await page.waitForLoadState("networkidle");
   await shot("passport");

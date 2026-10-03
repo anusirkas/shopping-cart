@@ -18,6 +18,8 @@ Auro started as a React storefront inspired by Acne Studios, Prada and Celine. I
 | Fit finder | Product passport |
 |---|---|
 | ![Fit finder recommending size S for a slim cashmere turtleneck](docs/screenshots/product-fit-finder.webp) | ![Passport for the Põhja Coat with QR code, composition and supply chain](docs/screenshots/passport.webp) |
+| **3D fabric view** | **Admin** |
+| ![Camel twill swatch hanging from a rail in the 3D fabric view](docs/screenshots/product-3d-fabric.webp) | ![Admin with orders, sales figures and the inventory grid](docs/screenshots/admin.webp) |
 | **Front page** | **Stores** |
 | ![Front page with the Auro wordmark over editorial photography](docs/screenshots/home.webp) | ![Store locator on a monochrome map of Paris](docs/screenshots/stores.webp) |
 
@@ -27,7 +29,8 @@ Screenshots are generated from the live site with `npx tsx scripts/screenshots.t
 
 | | |
 |---|---|
-| App | Next.js 16 (App Router, Server Components), React 19, TypeScript |
+| App | Next.js 16 (App Router, Server Components, Server Actions), React 19, TypeScript |
+| 3D | three.js with React Three Fiber, procedural canvas textures |
 | Data | PostgreSQL on Neon, Drizzle ORM. Falls back to the bundled seed catalogue when no database is configured, so the demo never goes down |
 | Payments | Stripe Checkout in test mode; a signed webhook marks orders paid and decrements stock (verified end to end on the live site) |
 | Maps | Leaflet with OpenStreetMap tiles |
