@@ -135,16 +135,25 @@ test.describe("passports and stores", () => {
   });
 });
 
-test("admin is a read-only demo without a password", async ({ page }) => {
+test("admin is open to visitors and offers a one-click demo session", async ({ page }) => {
   await page.goto("/admin");
-  await expect(page.getByText("Read-only demo", { exact: true })).toBeVisible();
-  await expect(page.getByPlaceholder("Admin password")).toHaveCount(0); // no password configured
+  await expect(page.getByText("Read-only", { exact: true })).toBeVisible();
+  await expect(page.getByText("Owner sign-in")).toHaveCount(0); // no owner password configured
   await expect(page.locator(".inventory tbody tr")).not.toHaveCount(0);
   await expect(page.locator(".inventory input")).toHaveCount(0);
 
   await page.getByRole("link", { name: "Needs attention" }).click();
   await expect(page).toHaveURL(/filter=attention/);
   const rows = await page.locator(".inventory tbody tr").count();
-  const lowCells = await page.locator(".inventory tbody tr").filter({ has: page.locator("td.is-low, td.is-out") }).count();
-  expect(lowCells).toBe(rows);
+  const flagged = await page.locator(".inventory tbody tr").filter({ has: page.locator("td.is-low, td.is-out") }).count();
+  expect(flagged).toBe(rows);
+
+  await page.getByRole("button", { name: "Try the back office →" }).click();
+  await expect(page.getByText("Demo admin", { exact: true })).toBeVisible();
+  await expect(page.getByText(/resets every night/)).toBeVisible();
+  // no database in CI, so stock stays read-only even for a signed-in admin
+  await expect(page.locator(".inventory input")).toHaveCount(0);
+
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page.getByText("Read-only", { exact: true })).toBeVisible();
 });

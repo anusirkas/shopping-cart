@@ -41,7 +41,11 @@ Everything runs on free tiers.
 
 ## Admin
 
-`/admin` shows paid and pending orders, test-mode revenue, units sold and the full inventory grid with sold-out and low-stock sizes highlighted. Anyone can view it as a read-only demo (customer emails are never shown). Editing stock requires the `ADMIN_PASSWORD` set on the server: signing in sets a signed, http-only cookie, and stock is saved through Server Actions that re-check the session.
+`/admin` is open to visitors: paid and pending orders, test-mode revenue, units sold and the full inventory grid with sold-out and low-stock sizes highlighted. Customer emails are never shown.
+
+- **Try the back office** starts a demo session with one click, no password. Demo admins can edit stock (capped at 50 per size) through Server Actions that re-check the signed, http-only session cookie.
+- **Nightly reset.** A Vercel cron job restores every size to its seeded stock *minus what paid orders have sold*, so visitors' experiments disappear overnight while real (test-mode) sales stay reflected. It's one `UPDATE … FROM (VALUES …)` statement joined to the paid order lines.
+- The owner signs in separately with `ADMIN_PASSWORD`, without the demo cap.
 
 ## Engineering notes
 
@@ -69,7 +73,8 @@ The store works without any configuration. To use a real database and payments, 
 DATABASE_URL=...            # Neon connection string
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-ADMIN_PASSWORD=...          # optional, enables stock editing in /admin
+ADMIN_PASSWORD=...          # optional, owner sign-in for /admin
+ADMIN_SESSION_SECRET=...    # optional, signs admin cookies (falls back to other server secrets)
 ```
 
 then create and fill the tables:
@@ -88,7 +93,7 @@ npm run test:e2e   # end-to-end tests (Playwright)
 
 **Unit tests** cover catalogue querying and faceting, the fit-finder algorithm and server-side checkout validation.
 
-**End-to-end tests** build the app and drive it in Chromium: URL-driven filters and shareable views, search, the fit finder selecting a size, the bag (add, change quantity, survive a reload, remove), the 3D fabric view loading on demand, checkout API validation, the webhook rejecting unsigned calls, passports, store search, the read-only admin and the mobile menu. They run with database and Stripe keys blanked, so they never touch real services and always see the same catalogue.
+**End-to-end tests** build the app and drive it in Chromium: URL-driven filters and shareable views, search, the fit finder selecting a size, the bag (add, change quantity, survive a reload, remove), the 3D fabric view loading on demand, checkout API validation, the webhook rejecting unsigned calls, passports, store search, the admin and its demo session, and the mobile menu. They run with database and Stripe keys blanked, so they never touch real services and always see the same catalogue.
 
 ---
 

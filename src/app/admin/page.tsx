@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LoginForm, LogoutButton, StockRow } from "@/app/admin/forms";
-import { adminConfigured, isAdmin } from "@/lib/admin-auth";
+import { LoginForm, LogoutButton, StockRow, TryDemoButton } from "@/app/admin/forms";
+import { demoLoginEnabled, getRole, ownerLoginEnabled } from "@/lib/admin-auth";
 import { getDb } from "@/lib/db/client";
 import { formatPrice } from "@/lib/money";
 import { getCatalogueForCheckout, getRecentOrders } from "@/lib/repository";
@@ -18,7 +18,7 @@ type Props = { searchParams: Promise<{ filter?: string }> };
 
 export default async function AdminPage({ searchParams }: Props) {
   const { filter } = await searchParams;
-  const [admin, orders, catalogue] = await Promise.all([isAdmin(), getRecentOrders(), getCatalogueForCheckout()]);
+  const [role, orders, catalogue] = await Promise.all([getRole(), getRecentOrders(), getCatalogueForCheckout()]);
   const connected = Boolean(getDb());
 
   const paid = orders.filter((o) => o.status === "paid");
@@ -45,19 +45,29 @@ export default async function AdminPage({ searchParams }: Props) {
           <h1>Admin</h1>
         </div>
         <div className="admin-session">
-          {admin ? (
+          {role ? (
             <>
-              <span className="pill pill-ok">Signed in</span>
+              <span className="pill pill-ok">{role === "owner" ? "Signed in as owner" : "Demo admin"}</span>
               <LogoutButton />
             </>
           ) : (
             <>
-              <span className="pill">Read-only demo</span>
-              {adminConfigured() && <LoginForm />}
+              <span className="pill">Read-only</span>
+              {demoLoginEnabled() && <TryDemoButton />}
             </>
           )}
         </div>
       </header>
+
+      {role === "demo" && (
+        <p className="notice">
+          You&apos;re in a demo session: change any stock level and press Save, then check the product page. Demo stock is capped at 50 and
+          resets every night, so you can&apos;t break anything.
+        </p>
+      )}
+      {!role && demoLoginEnabled() && connected && (
+        <p className="notice">This is the store&apos;s back office. Press <strong>Try the back office</strong> to edit stock, no password needed.</p>
+      )}
 
       {!connected && <p className="notice">No database connected: showing the bundled catalogue. Orders appear once DATABASE_URL is set.</p>}
 
@@ -122,13 +132,21 @@ export default async function AdminPage({ searchParams }: Props) {
                   colorway={r.colorway}
                   cells={r.cells.map((v) => (v ? { sku: v.sku, stock: v.stock } : null))}
                   low={LOW}
-                  editable={admin && connected}
+                  editable={Boolean(role) && connected}
+                  maxStock={role === "owner" ? 999 : 50}
                 />
               ))}
             </tbody>
           </table>
         </div>
       </section>
+
+      {!role && ownerLoginEnabled() && (
+        <details className="owner-login">
+          <summary>Owner sign-in</summary>
+          <LoginForm />
+        </details>
+      )}
     </div>
   );
 }

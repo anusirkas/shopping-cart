@@ -27,6 +27,6 @@ export default defineConfig({
     url: `http://127.0.0.1:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,
-    env: { DATABASE_URL: "", STRIPE_SECRET_KEY: "", STRIPE_WEBHOOK_SECRET: "", ADMIN_PASSWORD: "" },
+    env: { DATABASE_URL: "", STRIPE_SECRET_KEY: "", STRIPE_WEBHOOK_SECRET: "", ADMIN_PASSWORD: "", ADMIN_SESSION_SECRET: "e2e-session-secret" },
   },
 });

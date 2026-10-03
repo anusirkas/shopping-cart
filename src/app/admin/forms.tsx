@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { login, logout, updateStock, type ActionState } from "@/app/admin/actions";
+import { login, logout, tryDemo, updateStock, type ActionState } from "@/app/admin/actions";
+
+export function TryDemoButton() {
+  return (
+    <form action={tryDemo}>
+      <button className="btn">Try the back office →</button>
+    </form>
+  );
+}
 
 export function LoginForm() {
   const [state, action, pending] = useActionState<ActionState, FormData>(login, null);
@@ -31,10 +39,11 @@ type Props = {
   cells: Cell[];
   low: number;
   editable: boolean;
+  maxStock: number;
 };
 
 /** One inventory row: a colourway with a stock input per size. */
-export function StockRow({ product, colorway, cells, low, editable }: Props) {
+export function StockRow({ product, colorway, cells, low, editable, maxStock }: Props) {
   const [state, action, pending] = useActionState<ActionState, FormData>(updateStock, null);
   const formId = `stock-${cells.find(Boolean)?.sku ?? product.slug}`;
 
@@ -53,7 +62,7 @@ export function StockRow({ product, colorway, cells, low, editable }: Props) {
                 name={`stock:${c.sku}`}
                 type="number"
                 min={0}
-                max={999}
+                max={maxStock}
                 defaultValue={c.stock}
                 aria-label={`Stock for ${product.name} ${colorway.name} ${c.sku.split("-").at(-1)}`}
               />
