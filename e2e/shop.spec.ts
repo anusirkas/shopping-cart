@@ -134,3 +134,17 @@ test.describe("passports and stores", () => {
     await expect(page.getByText("No stores match")).toBeVisible();
   });
 });
+
+test("admin is a read-only demo without a password", async ({ page }) => {
+  await page.goto("/admin");
+  await expect(page.getByText("Read-only demo", { exact: true })).toBeVisible();
+  await expect(page.getByPlaceholder("Admin password")).toHaveCount(0); // no password configured
+  await expect(page.locator(".inventory tbody tr")).not.toHaveCount(0);
+  await expect(page.locator(".inventory input")).toHaveCount(0);
+
+  await page.getByRole("link", { name: "Needs attention" }).click();
+  await expect(page).toHaveURL(/filter=attention/);
+  const rows = await page.locator(".inventory tbody tr").count();
+  const lowCells = await page.locator(".inventory tbody tr").filter({ has: page.locator("td.is-low, td.is-out") }).count();
+  expect(lowCells).toBe(rows);
+});

@@ -47,6 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <h3>About this demo</h3>
                 <a href="https://github.com/anusirkas/shopping-cart">Source on GitHub</a>
                 <a href="https://portfolio-anu-sirkas-projects.vercel.app/work/auro">Case study</a>
+                <Link href="/admin">Admin (read-only demo)</Link>
               </div>
             </div>
             <p className="muted footer-note">

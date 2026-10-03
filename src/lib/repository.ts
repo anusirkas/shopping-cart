@@ -1,9 +1,9 @@
 import "server-only";
-import { asc } from "drizzle-orm";
+import { asc, desc } from "drizzle-orm";
 import { cache } from "react";
 import { catalogue as seedCatalogue } from "@/data/catalogue";
 import { getDb, type Db } from "@/lib/db/client";
-import { colorways, passportFibres, supplyStages } from "@/lib/db/schema";
+import { colorways, orders, passportFibres, supplyStages } from "@/lib/db/schema";
 import type { Construction, Product, Silhouette, Size, SupplyStage } from "@/lib/types";
 
 /**
@@ -83,4 +83,28 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
 
 export async function getProductByPassportId(id: string): Promise<Product | undefined> {
   return (await getCatalogue()).find((p) => p.passport.id.toLowerCase() === id.toLowerCase());
+}
+
+export type OrderSummary = {
+  id: string;
+  status: "pending" | "paid" | "cancelled";
+  totalCents: number;
+  items: number;
+  lines: { name: string; sku: string; quantity: number }[];
+  createdAt: string;
+};
+
+/** Recent orders for the admin. Customer emails are deliberately left out. */
+export async function getRecentOrders(limit = 30): Promise<OrderSummary[]> {
+  const db = getDb();
+  if (!db) return [];
+  const rows = await db.select().from(orders).orderBy(desc(orders.createdAt)).limit(limit);
+  return rows.map((o) => ({
+    id: o.id,
+    status: o.status,
+    totalCents: o.totalCents,
+    items: o.lines.reduce((n, l) => n + l.quantity, 0),
+    lines: o.lines.map(({ name, sku, quantity }) => ({ name, sku, quantity })),
+    createdAt: o.createdAt.toISOString(),
+  }));
 }

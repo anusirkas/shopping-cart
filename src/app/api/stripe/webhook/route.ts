@@ -1,4 +1,5 @@
 import { and, eq, gte, sql } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db/client";
 import { orders, variants } from "@/lib/db/schema";
@@ -44,6 +45,10 @@ export async function POST(request: Request) {
     .update(orders)
     .set({ status: "paid", email: session.customer_details?.email ?? null })
     .where(eq(orders.id, order.id));
+
+  // product pages are statically cached; refresh them on their next visit
+  revalidatePath("/product/[slug]", "page");
+  revalidatePath("/admin");
 
   return NextResponse.json({ received: true });
 }
