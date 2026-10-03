@@ -1,8 +1,10 @@
 # Auro
 
+[![CI](https://github.com/anusirkas/shopping-cart/actions/workflows/ci.yml/badge.svg)](https://github.com/anusirkas/shopping-cart/actions/workflows/ci.yml)
+
 A full-stack fashion store built as a portfolio project by [Anu Sirkas](https://portfolio-anu-sirkas-projects.vercel.app), a software engineer with ten years in garment technology and textile design.
 
-**Live demo:** https://auro-studio.vercel.app · payments run in Stripe test mode, use card `4242 4242 4242 4242`
+**Live demo:** https://auro-studio.vercel.app · payments run in Stripe test mode, use card `4242 4242 4242 4242` · [back office](https://auro-studio.vercel.app/admin) open to visitors
 
 ![Auro shop with technical flats](docs/screenshots/shop.webp)
 
@@ -39,6 +41,38 @@ Screenshots are generated from the live site with `npx tsx scripts/screenshots.t
 
 Everything runs on free tiers.
 
+## Architecture
+
+```
+Browser ──► Next.js on Vercel (Server Components, Route Handlers, Server Actions)
+              │
+              ├─ catalogue pages ──► repository ──► Neon Postgres (Drizzle)
+              │                          └─ bundled seed catalogue if the DB is unset or unreachable
+              ├─ POST /api/checkout ──► re-price + stock check against live DB ──► Stripe Checkout session
+              │                                                                   + pending order row
+Stripe ──────►├─ POST /api/stripe/webhook (signature verified)
+              │      └─ order → paid, stock -= qty where stock >= qty, revalidate product pages
+              ├─ /admin (Server Actions, signed session cookie)
+Vercel cron ─►└─ GET /api/cron/reset-demo  (nightly: stock = seed − paid sales)
+```
+
+Product and passport pages are statically generated; product pages are revalidated on demand when stock changes (webhook, admin, nightly reset) and the home page on a five-minute timer. The shop, bag and admin render per request.
+
+## Fit-finder algorithm
+
+For each size and each measuring point that matters for the silhouette (chest for tops, chest and hip for dresses, waist and hip for bottoms):
+
+```
+ease    = garment circumference − body circumference
+target  = designed ease for the fit (e.g. chest: slim 4, regular 10, relaxed 18, oversized 28 cm) + preference shift
+floor   = −8 cm × fabric stretch            # knits may sit below zero ease, wovens may not
+miss    = ease − target
+score  += weight × (miss < 0 ? 1.6·|miss| : miss)   # too small is worse than too big
+score  += 1000 if ease < floor                       # physically too tight
+```
+
+The lowest score wins; the gap to the runner-up sets the confidence, and a close runner-up is offered as "between sizes". See `src/lib/fit.ts` and its tests.
+
 ## Admin
 
 `/admin` is open to visitors: paid and pending orders, test-mode revenue, units sold and the full inventory grid with sold-out and low-stock sizes highlighted. Customer emails are never shown.
@@ -60,6 +94,33 @@ Everything runs on free tiers.
 
 `products` → `colorways`, `variants` (SKU × colourway × size, with stock) and one `passports` row → `passport_fibres`, `supply_stages`. `orders` store priced lines as JSON. Schema: `src/lib/db/schema.ts`.
 
+## Project structure
+
+```
+src/
+  app/                  routes: shop, product/[slug], passport, bag, stores, admin, api/*
+  components/           FlatSketch (SVG flats), FabricViewer (3D), FitFinder, Filters, cart
+  data/                 seed catalogue, garment size specs, stores and journal
+  lib/
+    catalogue-query.ts  filtering, facets, sorting, URL (de)serialisation
+    fit.ts              fit-finder algorithm
+    checkout.ts         server-side bag validation
+    repository.ts       data access with DB fallback
+    db/schema.ts        Drizzle schema
+e2e/                    Playwright tests
+scripts/                seed and screenshot scripts
+```
+
+## Trade-offs and known limitations
+
+Deliberate choices for a demo, and what a production store would do instead:
+
+- **No stock reservation during checkout.** Stock is checked when the Stripe session is created and decremented when payment succeeds. If the last item sells to someone else in between, the conditional update leaves stock untouched but the order is still marked paid. A real store would reserve stock for the session's lifetime or refund automatically when the decrement affects no rows.
+- **In-memory filtering.** Fine for ~30 products; at scale, filters and facet counts move to SQL (or a search index) with indexes on category, fibre and colour.
+- **Demo-grade admin auth.** One owner password and an HMAC-signed cookie, no user accounts or roles beyond owner/demo. Production would use a proper identity provider.
+- **Illustrative passport data.** Supply chains and footprints are modelled realistically but invented; real passports would come from suppliers via a standard such as GS1 Digital Link.
+- **Cart in `localStorage`.** No server-side carts or customer accounts, so a bag doesn't follow you between devices.
+
 ## Run locally
 
 ```bash
@@ -75,6 +136,7 @@ STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 ADMIN_PASSWORD=...          # optional, owner sign-in for /admin
 ADMIN_SESSION_SECRET=...    # optional, signs admin cookies (falls back to other server secrets)
+CRON_SECRET=...             # optional, restricts the nightly reset to Vercel's signed cron call
 ```
 
 then create and fill the tables:
@@ -91,9 +153,9 @@ npm test           # unit tests (Vitest)
 npm run test:e2e   # end-to-end tests (Playwright)
 ```
 
-**Unit tests** cover catalogue querying and faceting, the fit-finder algorithm and server-side checkout validation.
+**22 unit tests** cover catalogue querying and faceting, the fit-finder algorithm and server-side checkout validation.
 
-**End-to-end tests** build the app and drive it in Chromium: URL-driven filters and shareable views, search, the fit finder selecting a size, the bag (add, change quantity, survive a reload, remove), the 3D fabric view loading on demand, checkout API validation, the webhook rejecting unsigned calls, passports, store search, the admin and its demo session, and the mobile menu. They run with database and Stripe keys blanked, so they never touch real services and always see the same catalogue.
+**15 end-to-end tests** build the app and drive it in Chromium: URL-driven filters and shareable views, search, the fit finder selecting a size, the bag (add, change quantity, survive a reload, remove), the 3D fabric view loading on demand, checkout API validation, the webhook rejecting unsigned calls, passports, store search, the admin and its demo session, and the mobile menu. They run with database and Stripe keys blanked, so they never touch real services and always see the same catalogue.
 
 ---
 
